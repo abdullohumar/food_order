@@ -16,7 +16,7 @@
             max-width: 400px;
             margin: auto;
             background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
+            padding: 40px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-top: 100px;
@@ -41,6 +41,9 @@
         <h2>Login ke RestoKu</h2>
         <form action="{{ route('login.post') }}" method="POST">
             @csrf
+            @if (session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="Email...">
