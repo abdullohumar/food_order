@@ -50,56 +50,28 @@
     <div class="menu-container container">
         <div class="row">
             <!-- Menu Item 1 -->
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4 mb-4 menu-item">
                 <div class="card menu-card">
                     <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Menu 1">
                     <div class="card-body">
                         <h5 class="card-title">Nasi Goreng Spesial</h5>
                         <p class="card-text">Hidangan favorit dengan bumbu khas resto kami.</p>
-                        <p class="text-primary fw-bold">Rp25.000</p>
+                        <p class="text-primary fw-bold item-price">Rp25.000</p>
                         <div class="quantity-control">
                             <button class="btn btn-outline-primary btn-sm" onclick="updateQuantity('item1', -1)">-</button>
-                            <span id="item1" class="fw-bold">0</span>
+                            <span id="item1" class="fw-bold item-quantity">0</span>
                             <button class="btn btn-outline-primary btn-sm" onclick="updateQuantity('item1', 1)">+</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Menu Item 2 -->
-            <div class="col-md-4 mb-4">
-                <div class="card menu-card">
-                    <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Menu 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Mie Ayam</h5>
-                        <p class="card-text">Lezat dan nikmat dengan topping ayam spesial.</p>
-                        <p class="text-primary fw-bold">Rp20.000</p>
-                        <div class="quantity-control">
-                            <button class="btn btn-outline-primary btn-sm" onclick="updateQuantity('item2', -1)">-</button>
-                            <span id="item2" class="fw-bold">0</span>
-                            <button class="btn btn-outline-primary btn-sm" onclick="updateQuantity('item2', 1)">+</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Menu Item 3 -->
-            <div class="col-md-4 mb-4">
-                <div class="card menu-card">
-                    <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Menu 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Ayam Bakar</h5>
-                        <p class="card-text">Dibakar dengan bumbu spesial hingga sempurna.</p>
-                        <p class="text-primary fw-bold">Rp30.000</p>
-                        <div class="quantity-control">
-                            <button class="btn btn-outline-primary btn-sm" onclick="updateQuantity('item3', -1)">-</button>
-                            <span id="item3" class="fw-bold">0</span>
-                            <button class="btn btn-outline-primary btn-sm" onclick="updateQuantity('item3', 1)">+</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="text-center">
+        <p id="total-price" class="fw-bold mt-3">Total: Rp0</p>
+    </div>
 @endsection
+
 @section('script')
 <script>
     function updateQuantity(itemId, change) {
@@ -108,6 +80,22 @@
         let newQuantity = currentQuantity + change;
         if (newQuantity < 0) newQuantity = 0;
         quantityElement.textContent = newQuantity;
+        
+        updateTotalPrice();
+    }
+
+    function updateTotalPrice() {
+        const rows = document.querySelectorAll('.menu-item');
+        let totalPrice = 0;
+
+        rows.forEach(row => {
+            const priceText = row.querySelector('.item-price').textContent.replace('Rp', '').replace('.', ''); 
+            const price = parseFloat(priceText);
+            const quantity = parseInt(row.querySelector('.item-quantity').textContent) || 0; 
+            totalPrice += price * quantity; 
+        });
+
+        document.getElementById('total-price').textContent = `Total: Rp${totalPrice.toLocaleString()}`; 
     }
 </script>
 @endsection
