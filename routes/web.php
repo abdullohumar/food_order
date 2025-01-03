@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdminController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,4 +20,10 @@ Route::get('/menu', [App\Http\Controllers\MenuController::class, 'index'])
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [App\Http\Controllers\AuthController::class, 'logout'])
         ->name('logout');
+});
+
+Route::prefix('admin')->middleware(['admin'])->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/menu/create', [AdminController::class, 'create'])->name('admin.menu.create');
+    Route::post('/menu/store', [AdminController::class, 'store'])->name('admin.menu.store');
 });
