@@ -13,9 +13,11 @@
             height: 200px;
             object-fit: cover;
         }
-
+        
         .menu-card {
             transition: transform 0.3s;
+            width: 300px;
+            padding: 10px;
         }
 
         .menu-card:hover {
@@ -50,13 +52,14 @@
     <div class="menu-container container">
         <div class="row">
             <!-- Menu Item 1 -->
+            @forelse ($menus as $menu)
             <div class="col-md-4 mb-4 menu-item">
                 <div class="card menu-card">
-                    <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Menu 1">
+                    <img src="{{ asset('storage/' . $menu->image) }}" class="card-img-top" alt="Menu 1" style="width: 100%; object-fit: cover;">
                     <div class="card-body">
-                        <h5 class="card-title">Nasi Goreng Spesial</h5>
-                        <p class="card-text">Hidangan favorit dengan bumbu khas resto kami.</p>
-                        <p class="text-primary fw-bold item-price">Rp25.000</p>
+                        <h5 class="card-title">{{ $menu->name }}</h5>
+                        <p class="card-text">{{ $menu->description }}</p>
+                        <p class="text-primary fw-bold item-price">Rp{{ number_format($menu->price, 0, ',', '.') }}</p>
                         <div class="quantity-control">
                             <button class="btn btn-outline-primary btn-sm" onclick="updateQuantity('item1', -1)">-</button>
                             <span id="item1" class="fw-bold item-quantity">0</span>
@@ -66,6 +69,9 @@
                 </div>
             </div>
         </div>
+        @empty
+            <p>Tidak ada menu yang tersedia.</p>
+        @endforelse
     </div>
     <div class="text-center">
         <p id="total-price" class="fw-bold mt-3">Total: Rp0</p>

@@ -37,7 +37,6 @@
             @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
-            
             <thead>
                 <tr>
                     <th>#</th>
@@ -50,22 +49,37 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Nasi Goreng Spesial</td>
-                    <td>Rp25.000</td>
-                    <td>Hidangan favorit dengan bumbu khas.</td>
-                    <td>Makanan</td>
-                    <td><img src="https://via.placeholder.com/100" alt="Menu" style="height: 50px;"></td>
-                    <td class="table-actions">
-                        <button class="btn btn-primary btn-sm">Edit</button>
-                        <button class="btn btn-danger btn-sm">Hapus</button>
-                    </td>
-                </tr>
+                @forelse ($menus as $menu)
+                    <tr>
+                        <td>{{ $loop->iteration + ($menus->currentPage() - 1) * $menus->perPage() }}</td>
+                        <td>{{ $menu->name }}</td>
+                        <td>Rp{{ number_format($menu->price, 0, ',', '.') }}</td>
+                        <td>{{ $menu->description }}</td>
+                        <td>{{ $menu->category }}</td>
+                        <td>
+                            <img src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->name }}" style="height: 70px;">
+                        </td>
+                        <td class="table-actions">
+                            <a href="{{ route('admin.menu.edit', $menu->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                            <form action="{{ route('admin.menu.destroy', $menu->id) }}" method="POST"
+                                style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure?')">Hapus</button>
+                            </form>
+                        </td>
+
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" class="text-center">Tidak ada data menu.</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
-    
+
     {{-- <div class="modal fade" id="addMenuModal" tabindex="-1" aria-labelledby="addMenuModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

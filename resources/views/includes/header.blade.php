@@ -6,9 +6,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#menu">Menu</a></li>
                 <li class="nav-item"><a class="nav-link" href="#promo">Promo</a></li>
-                <li class="nav-item"><a class="nav-link" href="#contact">Hubungi Kami</a></li>
+                @if (Auth::check() && Auth::user()->role == 'admin')
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                @endif
                 @if (Auth::check())
                     <li class="nav-item"><a class="nav-link" href="{{ route('logout') }}">Logout</a></li>
                 @endif
