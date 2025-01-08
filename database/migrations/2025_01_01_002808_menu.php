@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('menu', function (Blueprint $table) {
             $table->id();
-            $table->integer('menu_id')->unique();
             $table->string('name');
             $table->string('slug')->unique();
             $table->integer('price');

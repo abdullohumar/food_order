@@ -29,6 +29,7 @@ class AdminController extends Controller
             'category' => 'required|string'
         ]);
 
+        // dd($validated);
         try {
             $imagePath = $request->file('image')->store('images', 'public');
 
@@ -43,6 +44,7 @@ class AdminController extends Controller
 
             return redirect()->route('admin.dashboard')->with('success', 'Menu created successfully.');
         } catch (\Exception $e) {
+            // dd($e);
             return redirect()->back()->withErrors([
                 'error' => 'Failed to create menu: ' . $e->getMessage(),
             ]);

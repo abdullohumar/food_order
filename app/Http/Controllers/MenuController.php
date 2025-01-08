@@ -12,5 +12,10 @@ class MenuController extends Controller
         $menus = Menu::paginate(10); 
         return view('menu', compact('menus'));
     }
-    
+
+    public function show($slug)
+    {
+        $menu = Menu::where('slug', $slug)->first();
+        return view('menu-detail', compact('menu'));
+    }
 }

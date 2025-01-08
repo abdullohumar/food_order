@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\AdminController;
 
 Route::get('/', function () {
@@ -20,6 +21,8 @@ Route::get('/menu', [App\Http\Controllers\MenuController::class, 'index'])
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [App\Http\Controllers\AuthController::class, 'logout'])
         ->name('logout');
+    Route::post('/order', [OrderController::class, 'store'])->middleware('web');
+    Route::get('/order/{order}', [OrderController::class, 'show'])->name('order.show');
 });
 
 Route::prefix('admin')->middleware(['admin'])->group(function () {
